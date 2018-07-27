@@ -20,10 +20,10 @@ public class SmsServiceTask implements JavaDelegate {
     }
 
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        String id = delegateExecution.getCurrentActivityId();
-        Map<String, Object> variables = taskService.getVariables(id);
+        Map<String, Object> variables = delegateExecution.getVariables();
+        log.info("variables is {}", variables);
 
-        Long studentId = (Long) variables.get("student");
+        String studentId = (String)variables.get("student");
         log.info("success send sms message to the student {}", studentId);
     }
 }

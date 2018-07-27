@@ -2,6 +2,11 @@
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_0vip0x3" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.16.2">
   <bpmn:process id="project" name="项目报名审核" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1" name="学生报名" camunda:initiator="student">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="recordId" label="项目审批记录id" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
       <bpmn:outgoing>SequenceFlow_0896wbg</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0896wbg" sourceRef="StartEvent_1" targetRef="Task_0uo9776" />
@@ -51,8 +56,8 @@
     <bpmn:userTask id="Task_0swjsdt" name="二级审核" camunda:candidateGroups="教务处">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="extra_info_2" type="boolean" />
-          <camunda:formField id="approved_2" type="boolean" />
+          <camunda:formField id="extra_info_1" type="boolean" />
+          <camunda:formField id="approved_1" type="boolean" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1d807sw</bpmn:incoming>
@@ -66,7 +71,7 @@
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_1oiv92z" sourceRef="Task_0swjsdt" targetRef="ExclusiveGateway_01edl56" />
     <bpmn:sequenceFlow id="SequenceFlow_1e54uxy" sourceRef="ExclusiveGateway_01edl56" targetRef="Task_090hxrd">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${extra_info_2 == true}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${extra_info_1 == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_067h4pg" sourceRef="Task_090hxrd" targetRef="Task_0swjsdt" />
     <bpmn:userTask id="Task_090hxrd" name="上传额外材料" camunda:assignee="${student}">
@@ -196,3 +201,5 @@
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
+
+
