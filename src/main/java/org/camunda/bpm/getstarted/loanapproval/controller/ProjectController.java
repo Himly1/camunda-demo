@@ -59,6 +59,28 @@ public class ProjectController {
         }
     }
 
+    private static class UploadExtraInfoRecord {
+        private String taskId;
+
+        private String theUploadUrlOfExtraInfo;
+
+        public String getTaskId() {
+            return taskId;
+        }
+
+        public String getTheUploadUrlOfExtraInfo() {
+            return theUploadUrlOfExtraInfo;
+        }
+
+        public void setTaskId(String taskId) {
+            this.taskId = taskId;
+        }
+
+        public void setTheUploadUrlOfExtraInfo(String theUploadUrlOfExtraInfo) {
+            this.theUploadUrlOfExtraInfo = theUploadUrlOfExtraInfo;
+        }
+    }
+
     public ProjectController(TaskService taskService, RuntimeService runtimeService) {
         this.taskService = taskService;
         this.runtimeService = runtimeService;
@@ -136,7 +158,23 @@ public class ProjectController {
         }
     }
 
-    public List<String>  getUserTasks(String info) {
-        taskService.createTaskQuery().
+    @ApiOperation(value = "获取学生需要上传额外材料的记录")
+    @GetMapping(value = "/users/{userId}/extraInfo/list")
+    public List<UploadExtraInfoRecord> getUploadExtraTask(Long userId) {
+        List<Task> uploadExtraInfoTask =
+                taskService.createTaskQuery().taskAssignee(String.valueOf(userId)).taskName("上传额外材料").list();
+
+        List<UploadExtraInfoRecord> records = new ArrayList<>(uploadExtraInfoTask.size());
+        uploadExtraInfoTask.forEach( task -> {
+            UploadExtraInfoRecord record = new UploadExtraInfoRecord();
+            record.setTaskId(task.getId());
+
+            //the upload url of extra info is up to the variable
+            record.setTheUploadUrlOfExtraInfo("www.google.com");
+
+            records.add(record);
+        });
+
+        return records;
     }
 }
